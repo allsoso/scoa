@@ -23,7 +23,7 @@ public class Sala {
     private String nome;
     private Float quantidade_cadeiras;
     @OneToOne
-    @JoinColumn(name="codigo",nullable = true)
+    @JoinColumn(name="codigo_turma",nullable = true)
     private Turma turma;
     @CreationTimestamp
     private LocalDateTime criado_em;

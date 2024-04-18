@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +23,13 @@ public class Turma {
     private Long codigo;
     private String nome;
     private Float quantidade_alunos;
+
+    @ManyToMany
+    @JoinTable(name="alocacao_turma_disciplina",
+            joinColumns = @JoinColumn(name="codigo_turma"),
+            inverseJoinColumns = @JoinColumn(name = "codigo_disciplina"))
+    private Set<Disciplina> disciplinas;
+
     @CreationTimestamp
     private LocalDateTime criado_em;
     @UpdateTimestamp

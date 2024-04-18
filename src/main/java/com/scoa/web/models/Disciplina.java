@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +24,10 @@ public class Disciplina {
     @ManyToOne
     @JoinColumn(name="id",nullable = true)
     private Professor professor;
+
+    @ManyToMany
+    @JoinTable(name="alocacao_turma_disciplina",
+            joinColumns = @JoinColumn(name="codigo_disciplina"),
+            inverseJoinColumns = @JoinColumn(name = "codigo_turma"))
+    private Set<Turma> turmas;
 }
