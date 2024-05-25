@@ -7,5 +7,11 @@ import java.util.List;
 
 public interface AlunoService {
     List<AlunoDto> findAllAlunos();
-    Aluno saveAluno(Aluno aluno);
+    Aluno saveAluno(AlunoDto alunoDto);
+    AlunoDto findAlunoById(long alunoId);
+    List<AlunoDto> findAlunosByParams(String nome, String cpf);
+
+    void updateAluno(AlunoDto aluno);
+
+    void delete(Long alunoId);
 }

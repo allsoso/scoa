@@ -4,17 +4,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Inserir Aluno</title>
+    <title>Inserir Professor</title>
 </head>
 <body class="d-flex flex-column h-100">
-    <main class="flex-shrink-0">
-        <section layout:fragment="body" class="py-5">
+<main class="flex-shrink-0">
+    <section layout:fragment="body" class="py-5">
         <div class="container m-5 border">
             <form class="row g-3 m-4" role="form" method="post"
-                  th:action="@{/alunos/new}"
-                  th:object="${aluno}">
+                  th:action="@{/professores/new}"
+                  th:object="${professor}">
                 <div class ="col-12 m-2 text-center">
-                    <h2>Insira as Informacoes do Aluno</h2>
+                    <h2>Insira as Informacoes do Professor</h2>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputNome" class="form-label">Nome</label>
@@ -53,11 +53,11 @@
                             id="inputDataNascimento">
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Inserir Aluno</button>
+                    <button type="submit" class="btn btn-primary">Inserir Professor</button>
                 </div>
             </form>
         </div>
-        </section>
-    </main>
+    </section>
+</main>
 </body>
 </html>

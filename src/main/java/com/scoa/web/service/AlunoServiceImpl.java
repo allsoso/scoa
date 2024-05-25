@@ -25,8 +25,45 @@ public class AlunoServiceImpl implements AlunoService{
     }
 
     @Override
-    public Aluno saveAluno(Aluno aluno) {
+    public Aluno saveAluno(AlunoDto alunoDto) {
+        Aluno aluno = mapToAluno(alunoDto);
         return alunoRepositorio.save(aluno);
+    }
+
+    @Override
+    public AlunoDto findAlunoById(long alunoId) {
+        Aluno aluno = alunoRepositorio.findById(alunoId).get();
+        return mapToAlunoDto(aluno);
+    }
+
+    @Override
+    public List<AlunoDto> findAlunosByParams(String nome, String cpf) {
+        List<Aluno> alunos =  alunoRepositorio.findByNomeAndCpf(nome,cpf);
+        return alunos.stream().map((aluno) -> mapToAlunoDto(aluno)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateAluno(AlunoDto alunoDto) {
+        Aluno aluno = mapToAluno(alunoDto);
+        alunoRepositorio.save(aluno);
+    }
+
+    @Override
+    public void delete(Long alunoId) {
+        alunoRepositorio.deleteById(alunoId);
+    }
+
+    private Aluno mapToAluno(AlunoDto aluno) {
+        Aluno alunoDto = Aluno.builder()
+                .id(aluno.getId())
+                .cpf(aluno.getCpf())
+                .nome(aluno.getNome())
+                .matricula(aluno.getMatricula())
+                .data_nascimento(aluno.getData_nascimento())
+                .endereco(aluno.getEndereco())
+                .criado_em(aluno.getCriado_em())
+                .build();
+        return alunoDto;
     }
 
     private AlunoDto mapToAlunoDto(Aluno aluno){

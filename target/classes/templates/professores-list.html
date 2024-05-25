@@ -4,16 +4,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Listar Aluno</title>
+    <title>Listar Professor</title>
 </head>
 
-    <!-- Page Content-->
+<!-- Page Content-->
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
     <section layout:fragment="body" class="py-5">
         <div class="container m-3 border">
             <form class="row g-3 m-4" role="form" method="post"
-            th:action="@{/alunos}">
+                  th:action="@{/professores}">
                 <div class="form-group col-md-3">
                     <label for="filterNome" class="form-label">Nome</label>
                     <input
@@ -57,16 +57,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="aluno :${alunos}">
-                        <td th:text="${aluno.cpf}"></td>
-                        <td th:text="${aluno.nome}"></td>
-                        <td th:text="${aluno.matricula}"></td>
-                        <td th:text="${aluno.endereco}"></td>
-                        <td th:text="${aluno.data_nascimento}"></td>
+                    <tr th:each="professor :${professores}">
+                        <td th:text="${professor.cpf}"></td>
+                        <td th:text="${professor.nome}"></td>
+                        <td th:text="${professor.matricula}"></td>
+                        <td th:text="${professor.endereco}"></td>
+                        <td th:text="${professor.data_nascimento}"></td>
                         <td>
-                            <a class="btn btn-primary" th:href="@{/alunos/{alunoId}/edit(alunoId=${aluno.id})}">
+                            <a class="btn btn-primary" th:href="@{/professores/{professorId}/edit(professorId=${professor.id})}">
                                 Editar</a>
-                            <a class="btn btn-danger" th:href="@{/alunos/{alunoId}/delete(alunoId=${aluno.id})}">
+                            <a class="btn btn-danger" th:href="@{/professores/{professorId}/delete(professorId=${professor.id})}">
                                 Deletar</a>
                         </td>
 
