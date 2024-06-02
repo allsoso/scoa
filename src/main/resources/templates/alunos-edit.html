@@ -48,11 +48,20 @@
                 <div class="form-group col-md-6">
                     <label for="inputDataNascimento" class="form-label">Data de Nascimento</label>
                     <input
-                            type="datetime-local"
+                            type="text"
                             th:field="*{data_nascimento}"
                             class="form-control"
                             placeholder="yyyy-mm-dd"
                             id="inputDataNascimento">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputTurma" class="form-label">Turma</label>
+                    <select id="inputTurma" th:field="*{turma}" name="inputTurma" class="form-control">
+                        <option value="" th:text="'Escolha uma turma'" th:if="${aluno.turma == null}"></option>
+                        <option  th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nome}"
+                                th:selected="${turma.id} == ${aluno.turma}"></option>
+
+                    </select>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Atualizar Aluno</button>

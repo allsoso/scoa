@@ -27,7 +27,7 @@ public class Aluno {
     private String endereco;
     private LocalDate data_nascimento;
     @ManyToOne
-    @JoinColumn(name="codigo",nullable = true)
+    @JoinColumn(name="id_turma",nullable = true)
     private Turma turma;
     @CreationTimestamp
     private LocalDateTime criado_em;

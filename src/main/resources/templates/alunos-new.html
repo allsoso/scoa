@@ -47,7 +47,7 @@
                 <div class="form-group col-md-6">
                     <label for="inputDataNascimento" class="form-label">Data de Nascimento</label>
                     <input
-                            type="datetime-local"
+                            type="date"
                             th:field="*{data_nascimento}"
                             class="form-control"
                             id="inputDataNascimento">
@@ -60,4 +60,11 @@
         </section>
     </main>
 </body>
+<script type="text/javascript">
+    $(function () {
+        $('#inputDataNascimento).datepicker({
+            format: 'yyyy-MM-dd'
+        });
+    });
+</script>
 </html>

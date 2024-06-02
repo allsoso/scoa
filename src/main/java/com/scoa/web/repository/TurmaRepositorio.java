@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TurmaRepositorio extends JpaRepository<Turma,Long> {
-    Optional<Turma> findByNome(String codigo);
+    Optional<Turma> findByCodigo(String codigo);
     List<Turma> findByNomeAndCodigo(String nome, String codigo);
 }

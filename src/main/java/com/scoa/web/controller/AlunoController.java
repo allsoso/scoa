@@ -1,8 +1,11 @@
 package com.scoa.web.controller;
 
 import com.scoa.web.dto.AlunoDto;
+import com.scoa.web.dto.TurmaDto;
 import com.scoa.web.models.Aluno;
+import com.scoa.web.models.Turma;
 import com.scoa.web.service.AlunoService;
+import com.scoa.web.service.TurmaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +15,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.scoa.web.mapper.TurmaMapper.mapToTurma;
+
 @Controller
 public class AlunoController {
    private AlunoService alunoService;
+   private TurmaService turmaService;
 
    @Autowired
-   private AlunoController(AlunoService alunoService){
+   private AlunoController(AlunoService alunoService, TurmaService turmaService){
        this.alunoService = alunoService;
+       this.turmaService = turmaService;
    }
 
    @GetMapping("/alunos")
@@ -61,19 +68,26 @@ public class AlunoController {
 
    @GetMapping("/alunos/{alunoId}/edit")
    public String editAlunoForm(@PathVariable("alunoId") long alunoId, Model model){
+       List<TurmaDto> turmas = turmaService.findAllTurmas();
        AlunoDto aluno = alunoService.findAlunoById(alunoId);
        model.addAttribute("aluno",aluno);
+       model.addAttribute("turmas",turmas);
        return "alunos-edit";
    }
 
    @PostMapping("/alunos/{alunoId}/edit")
-   public String updateAluno(@PathVariable("alunoId") Long alunoId, @Valid @ModelAttribute("aluno") AlunoDto alunoDto,
+   public String updateAluno(@PathVariable("alunoId") Long alunoId,
+                             @RequestParam(value="turma", required = false) String turmaId,
+                             @Valid @ModelAttribute("aluno") AlunoDto alunoDto,
                              BindingResult result, Model model){
        if(result.hasErrors()) {
            model.addAttribute("aluno", alunoDto);
            return "alunos-edit";
        }
+       TurmaDto turmaDto = turmaService.findTurmaById(Integer.parseInt(turmaId));
+       Turma turma = mapToTurma(turmaDto);
        alunoDto.setId(alunoId);
+       alunoDto.setTurma(turma);
        alunoService.updateAluno(alunoDto);
        return "redirect:/alunos";
    }

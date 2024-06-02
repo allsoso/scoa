@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.scoa.web.mapper.TurmaMapper.mapToTurma;
+import static com.scoa.web.mapper.TurmaMapper.mapToTurmaDto;
+
 @Service
 public class TurmaServiceImpl implements TurmaService {
     private TurmaRepositorio turmaRepositorio;
@@ -53,25 +56,5 @@ public class TurmaServiceImpl implements TurmaService {
         turmaRepositorio.deleteById(turmaId);
     }
 
-    private Turma mapToTurma(TurmaDto turma) {
-        Turma turmaDto = Turma.builder()
-                .id(turma.getId())
-                .nome(turma.getNome())
-                .codigo(turma.getCodigo())
-                .quantidade_alunos(turma.getQuantidade_alunos())
-                .criado_em(turma.getCriado_em())
-                .build();
-        return turmaDto;
-    }
 
-    private TurmaDto mapToTurmaDto(Turma turma){
-        TurmaDto turmaDto = TurmaDto.builder()
-                .id(turma.getId())
-                .nome(turma.getNome())
-                .codigo(turma.getCodigo())
-                .quantidade_alunos(turma.getQuantidade_alunos())
-                .criado_em(turma.getCriado_em())
-                .build();
-        return turmaDto;
-    }
 }

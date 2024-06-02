@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DisciplinaRepositorio extends JpaRepository<Disciplina,Long> {
-    Optional<Disciplina> findByNome(String codigo);
+    Optional<Disciplina> findByCodigo(String codigo);
     List<Disciplina> findByNomeAndCodigo(String nome, String codigo);
 }

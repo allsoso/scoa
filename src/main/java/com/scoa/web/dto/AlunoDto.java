@@ -1,5 +1,6 @@
 package com.scoa.web.dto;
 
+import com.scoa.web.models.Turma;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,6 +35,8 @@ public class AlunoDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate data_nascimento;
     private LocalDateTime criado_em;
+
+    private Turma turma;
 }
 
 @Constraint(validatedBy = CPFValidator.class)

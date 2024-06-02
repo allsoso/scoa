@@ -23,7 +23,7 @@ public class Disciplina {
     private String nome;
     private LocalTime horario;
     @ManyToOne
-    @JoinColumn(name="id",nullable = true)
+    @JoinColumn(name="id_professor",nullable = true)
     private Professor professor;
 
     @ManyToMany

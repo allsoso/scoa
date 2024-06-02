@@ -30,6 +30,10 @@ public class Turma {
             inverseJoinColumns = @JoinColumn(name = "codigo_disciplina"))
     private Set<Disciplina> disciplinas;
 
+    @OneToMany(mappedBy = "turma")
+    private Set<Aluno> alunos;
+
+
     @CreationTimestamp
     private LocalDateTime criado_em;
     @UpdateTimestamp

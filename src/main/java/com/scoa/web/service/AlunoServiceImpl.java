@@ -62,6 +62,7 @@ public class AlunoServiceImpl implements AlunoService{
                 .data_nascimento(aluno.getData_nascimento())
                 .endereco(aluno.getEndereco())
                 .criado_em(aluno.getCriado_em())
+                .turma(aluno.getTurma())
                 .build();
         return alunoDto;
     }
@@ -75,6 +76,7 @@ public class AlunoServiceImpl implements AlunoService{
                 .data_nascimento(aluno.getData_nascimento())
                 .endereco(aluno.getEndereco())
                 .criado_em(aluno.getCriado_em())
+                .turma(aluno.getTurma())
                 .build();
         return alunoDto;
     }
