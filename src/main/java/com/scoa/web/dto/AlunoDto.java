@@ -15,6 +15,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class AlunoDto {
     private String cpf;
     @NotEmpty(message = "Endereco do aluno é obrigatório")
     private String endereco;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate data_nascimento;
     private LocalDateTime criado_em;
 }

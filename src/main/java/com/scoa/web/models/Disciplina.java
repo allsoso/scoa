@@ -18,7 +18,8 @@ import java.util.Set;
 public class Disciplina {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+    private Long id;
+    private String codigo;
     private String nome;
     private LocalTime horario;
     @ManyToOne

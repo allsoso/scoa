@@ -20,10 +20,10 @@ import java.util.Set;
 public class Turma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codigo;
+    private Long id;
+    private String codigo;
     private String nome;
     private Float quantidade_alunos;
-
     @ManyToMany
     @JoinTable(name="alocacao_turma_disciplina",
             joinColumns = @JoinColumn(name="codigo_turma"),

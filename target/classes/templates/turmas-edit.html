@@ -4,18 +4,18 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Editar Aluno</title>
+    <title>Editar Turma</title>
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
     <section layout:fragment="body" class="py-5">
         <div class="container m-5 border">
             <form class="row g-3 m-4" role="form" method="post"
-                  th:action="@{/alunos/{alunoId}/edit(alunoId=${aluno.id})}"
-                  th:object="${aluno}">
+                  th:action="@{/turmas/{turmaId}/edit(turmaId=${turma.id})}"
+                  th:object="${turma}">
                 <input type="hidden" th:field="*{id}">
                 <div class ="col-12 m-2 text-center">
-                    <h2>Atualize as Informacoes do Aluno</h2>
+                    <h2>Atualize as Informacoes do Turma</h2>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="inputNome" class="form-label">Nome</label>
@@ -27,35 +27,24 @@
                     <p th:if="${#fields.hasErrors('nome')}" class="text-danger" th:errors="*{nome}"></p>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputCPF" class="form-label">CPF</label>
+                    <label for="inputCodigo" class="form-label">Código</label>
                     <input
                             type="text"
-                            th:field="*{cpf}"
+                            th:field="*{codigo}"
                             class="form-control"
-                            id="inputCPF">
-                    <p th:if="${#fields.hasErrors('cpf')}" class="text-danger" th:errors="*{cpf}"></p>
+                            id="inputCodigo">
+                    <p th:if="${#fields.hasErrors('codigo')}" class="text-danger" th:errors="*{codigo}"></p>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputEndereco" class="form-label">Endereco</label>
+                    <label for="inputQuantidadeAlunos" class="form-label">Qntd. Máxima de Alunos</label>
                     <input
                             type="text"
-                            th:field="*{endereco}"
+                            th:field="*{quantidade_alunos}"
                             class="form-control"
-                            id="inputEndereco"
-                            placeholder="Rua X, 100">
-                    <p th:if="${#fields.hasErrors('endereco')}" class="text-danger" th:errors="*{endereco}"></p>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputDataNascimento" class="form-label">Data de Nascimento</label>
-                    <input
-                            type="datetime-local"
-                            th:field="*{data_nascimento}"
-                            class="form-control"
-                            placeholder="yyyy-mm-dd"
-                            id="inputDataNascimento">
+                            id="inputQuantidadeAlunos">
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Atualizar Aluno</button>
+                    <button type="submit" class="btn btn-primary">Atualizar Turma</button>
                 </div>
             </form>
         </div>
