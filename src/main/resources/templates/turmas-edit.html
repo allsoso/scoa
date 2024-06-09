@@ -43,6 +43,32 @@
                             class="form-control"
                             id="inputQuantidadeAlunos">
                 </div>
+                <div class="container m-5 border">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Ativo</th>
+                                <th scope="col">Disciplina</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="disciplina, iterStat :${disciplinas}">
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input"
+                                               th:id="'customCheck' + ${iterStat.index}"
+                                               th:name="selectedItems" th:value="${disciplina.id}"
+                                               th:checked="${#lists.contains(disciplinaIds, disciplina.id.toString())}"
+                                        >
+                                    </div>
+                                </td>
+                                <td th:text="${disciplina.nome}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Atualizar Turma</button>
                 </div>

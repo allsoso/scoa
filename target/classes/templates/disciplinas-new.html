@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Inserir Disciplina</title>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <section layout:fragment="body" class="py-5">
+        <div class="container m-5 border">
+            <form class="row g-3 m-4" role="form" method="post"
+                  th:action="@{/disciplinas/new}"
+                  th:object="${disciplina}">
+                <div class ="col-12 m-2 text-center">
+                    <h2>Insira as Informacoes da Disciplina</h2>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputNome" class="form-label">Nome</label>
+                    <input
+                            type="text"
+                            th:field="*{nome}"
+                            class="form-control"
+                            id="inputNome">
+                    <p th:if="${#fields.hasErrors('nome')}" class="text-danger" th:errors="*{nome}"></p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputCodigo" class="form-label">Código</label>
+                    <input
+                            type="text"
+                            th:field="*{codigo}"
+                            class="form-control"
+                            id="inputCodigo">
+                    <p th:if="${#fields.hasErrors('codigo')}" class="text-danger" th:errors="*{codigo}"></p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputHorario" class="form-label">Horário</label>
+                    <input
+                            type="time"
+                            th:field="*{horario}"
+                            class="form-control"
+                            id="inputHorario">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Inserir Disciplina</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

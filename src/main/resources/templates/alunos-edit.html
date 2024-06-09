@@ -63,6 +63,32 @@
 
                     </select>
                 </div>
+                <div class="container m-5 border">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Disciplina</th>
+                                <th scope="col">Nota</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="disciplina, iterStat :${disciplinas}">
+                                <td th:text="${disciplina.nome}"></td>
+                                <td>
+                                    <div class="custom-control">
+                                        <input
+                                        type="text"
+                                        class="custom-control-input"
+                                        th:id="'inputNota' + ${iterStat.index}"
+                                        th:name="notasList">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Atualizar Aluno</button>
                 </div>

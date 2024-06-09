@@ -5,13 +5,22 @@ import com.scoa.web.models.Disciplina;
 import com.scoa.web.repository.DisciplinaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import static com.scoa.web.mapper.DisciplinaMapper.mapToDisciplina;
+import static com.scoa.web.mapper.DisciplinaMapper.mapToDisciplinaDto;
 
 @Service
 public class DisciplinaServiceImpl implements DisciplinaService {
     private DisciplinaRepositorio disciplinaRepositorio;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public DisciplinaServiceImpl(DisciplinaRepositorio disciplinaRepositorio) {
@@ -24,6 +33,11 @@ public class DisciplinaServiceImpl implements DisciplinaService {
         return disciplinas.stream().map((disciplina) -> mapToDisciplinaDto(disciplina)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<DisciplinaDto> findAllDisciplinasByTurma(long turmaId) {
+        List<Disciplina> disciplinas = disciplinaRepositorio.findByTurmas_Id(turmaId);
+        return disciplinas.stream().map((disciplina) -> mapToDisciplinaDto(disciplina)).collect(Collectors.toList());
+    }
     @Override
     public Disciplina saveDisciplina(DisciplinaDto disciplinaDto) {
         Disciplina disciplina = mapToDisciplina(disciplinaDto);
@@ -48,28 +62,16 @@ public class DisciplinaServiceImpl implements DisciplinaService {
         disciplinaRepositorio.save(disciplina);
     }
 
+    @Transactional
+    public void clearProfessorFromDisciplinas(Long professorId) {
+        entityManager.createQuery("UPDATE Disciplina d SET d.professor = null WHERE d.professor.id = :professorId")
+                .setParameter("professorId", professorId)
+                .executeUpdate();
+    }
+
     @Override
     public void delete(Long disciplinaId) {
         disciplinaRepositorio.deleteById(disciplinaId);
     }
 
-    private Disciplina mapToDisciplina(DisciplinaDto disciplina) {
-        Disciplina disciplinaDto = Disciplina.builder()
-                .id(disciplina.getId())
-                .nome(disciplina.getNome())
-                .codigo(disciplina.getCodigo())
-                .horario(disciplina.getHorario())
-                .build();
-        return disciplinaDto;
-    }
-
-    private DisciplinaDto mapToDisciplinaDto(Disciplina disciplina){
-        DisciplinaDto disciplinaDto = DisciplinaDto.builder()
-                .id(disciplina.getId())
-                .nome(disciplina.getNome())
-                .codigo(disciplina.getCodigo())
-                .horario(disciplina.getHorario())
-                .build();
-        return disciplinaDto;
-    }
 }

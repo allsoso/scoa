@@ -10,28 +10,25 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "professor")
-public class Professor {
+@Table(name = "nota_aluno")
+public class NotaAluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String matricula;
-    private String nome;
-    private String cpf;
-    private String endereco;
-    private LocalDate data_nascimento;
-    @CreationTimestamp
-    private LocalDateTime criado_em;
-    @UpdateTimestamp
-    private LocalDateTime atualizado_em;
 
-    @OneToMany(mappedBy = "professor")
-    private Set<Disciplina> disciplinas;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_aluno",nullable = true)
+    private Aluno aluno;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_disciplina",nullable = true)
+    private Disciplina disciplina;
+
+    private Long nota;
 }

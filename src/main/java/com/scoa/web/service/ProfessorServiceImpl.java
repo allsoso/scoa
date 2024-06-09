@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.scoa.web.mapper.ProfessorMapper.mapToProfessor;
+import static com.scoa.web.mapper.ProfessorMapper.mapToProfessorDto;
+
 @Service
 public class ProfessorServiceImpl implements ProfessorService {
     private ProfessorRepositorio professorRepositorio;
@@ -53,29 +56,4 @@ public class ProfessorServiceImpl implements ProfessorService {
         professorRepositorio.deleteById(professorId);
     }
 
-    private Professor mapToProfessor(ProfessorDto professor) {
-        Professor professorDto = Professor.builder()
-                .id(professor.getId())
-                .cpf(professor.getCpf())
-                .nome(professor.getNome())
-                .matricula(professor.getMatricula())
-                .data_nascimento(professor.getData_nascimento())
-                .endereco(professor.getEndereco())
-                .criado_em(professor.getCriado_em())
-                .build();
-        return professorDto;
-    }
-
-    private ProfessorDto mapToProfessorDto(Professor professor){
-        ProfessorDto professorDto = ProfessorDto.builder()
-                .id(professor.getId())
-                .cpf(professor.getCpf())
-                .nome(professor.getNome())
-                .matricula(professor.getMatricula())
-                .data_nascimento(professor.getData_nascimento())
-                .endereco(professor.getEndereco())
-                .criado_em(professor.getCriado_em())
-                .build();
-        return professorDto;
-    }
 }

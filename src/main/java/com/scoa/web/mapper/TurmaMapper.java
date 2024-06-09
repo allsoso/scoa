@@ -11,6 +11,7 @@ public class TurmaMapper {
                 .codigo(turma.getCodigo())
                 .quantidade_alunos(turma.getQuantidade_alunos())
                 .criado_em(turma.getCriado_em())
+                .disciplinas(turma.getDisciplinas())
                 .build();
         return turmaDto;
     }
@@ -21,6 +22,7 @@ public class TurmaMapper {
                 .codigo(turma.getCodigo())
                 .quantidade_alunos(turma.getQuantidade_alunos())
                 .criado_em(turma.getCriado_em())
+                .disciplinas(turma.getDisciplinas())
                 .build();
         return turmaDto;
     }

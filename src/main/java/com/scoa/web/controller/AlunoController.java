@@ -1,10 +1,12 @@
 package com.scoa.web.controller;
 
 import com.scoa.web.dto.AlunoDto;
+import com.scoa.web.dto.DisciplinaDto;
 import com.scoa.web.dto.TurmaDto;
 import com.scoa.web.models.Aluno;
 import com.scoa.web.models.Turma;
 import com.scoa.web.service.AlunoService;
+import com.scoa.web.service.DisciplinaService;
 import com.scoa.web.service.TurmaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,15 @@ import static com.scoa.web.mapper.TurmaMapper.mapToTurma;
 public class AlunoController {
    private AlunoService alunoService;
    private TurmaService turmaService;
+   private DisciplinaService disciplinaService;
 
    @Autowired
-   private AlunoController(AlunoService alunoService, TurmaService turmaService){
+   private AlunoController(AlunoService alunoService,
+                           TurmaService turmaService,
+                           DisciplinaService disciplinaService){
        this.alunoService = alunoService;
        this.turmaService = turmaService;
+       this.disciplinaService = disciplinaService;
    }
 
    @GetMapping("/alunos")
@@ -70,8 +76,11 @@ public class AlunoController {
    public String editAlunoForm(@PathVariable("alunoId") long alunoId, Model model){
        List<TurmaDto> turmas = turmaService.findAllTurmas();
        AlunoDto aluno = alunoService.findAlunoById(alunoId);
+       System.out.println(aluno.getTurma());
+       List<DisciplinaDto> disciplinasSelecionadas = disciplinaService.findAllDisciplinasByTurma(aluno.getTurma().getId());
        model.addAttribute("aluno",aluno);
        model.addAttribute("turmas",turmas);
+       model.addAttribute("disciplinas",disciplinasSelecionadas);
        return "alunos-edit";
    }
 
