@@ -3,15 +3,24 @@ package com.scoa.web.service;
 import com.scoa.web.dto.AlunoDto;
 import com.scoa.web.models.Aluno;
 import com.scoa.web.repository.AlunoRepositorio;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.scoa.web.mapper.AlunoMapper.mapToAluno;
+import static com.scoa.web.mapper.AlunoMapper.mapToAlunoDto;
+
 @Service
 public class AlunoServiceImpl implements AlunoService{
     private AlunoRepositorio alunoRepositorio;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public AlunoServiceImpl(AlunoRepositorio alunoRepositorio) {
@@ -49,35 +58,16 @@ public class AlunoServiceImpl implements AlunoService{
     }
 
     @Override
+    @Transactional
+    public void deleteAllNotaByAlunoId(Long alunoId) {
+        entityManager.createQuery("DELETE FROM InfoAluno n WHERE n.aluno.id = :alunoId")
+                .setParameter("alunoId", alunoId)
+                .executeUpdate();
+    }
+
+    @Override
     public void delete(Long alunoId) {
         alunoRepositorio.deleteById(alunoId);
     }
 
-    private Aluno mapToAluno(AlunoDto aluno) {
-        Aluno alunoDto = Aluno.builder()
-                .id(aluno.getId())
-                .cpf(aluno.getCpf())
-                .nome(aluno.getNome())
-                .matricula(aluno.getMatricula())
-                .data_nascimento(aluno.getData_nascimento())
-                .endereco(aluno.getEndereco())
-                .criado_em(aluno.getCriado_em())
-                .turma(aluno.getTurma())
-                .build();
-        return alunoDto;
-    }
-
-    private AlunoDto mapToAlunoDto(Aluno aluno){
-        AlunoDto alunoDto = AlunoDto.builder()
-                .id(aluno.getId())
-                .cpf(aluno.getCpf())
-                .nome(aluno.getNome())
-                .matricula(aluno.getMatricula())
-                .data_nascimento(aluno.getData_nascimento())
-                .endereco(aluno.getEndereco())
-                .criado_em(aluno.getCriado_em())
-                .turma(aluno.getTurma())
-                .build();
-        return alunoDto;
-    }
 }

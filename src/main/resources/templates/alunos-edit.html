@@ -70,18 +70,33 @@
                             <tr>
                                 <th scope="col">Disciplina</th>
                                 <th scope="col">Nota</th>
+                                <th scope="col">Frequencia</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="disciplina, iterStat :${disciplinas}">
+                            <tr th:if="${disciplinas != null and not #lists.isEmpty(disciplinas)}" th:each="disciplina, iterStat :${disciplinas}">
                                 <td th:text="${disciplina.nome}"></td>
+                                <input type="hidden"
+                                       th:name="disciplinasList"
+                                       th:value="${disciplina.id}" />
                                 <td>
                                     <div class="custom-control">
                                         <input
                                         type="text"
                                         class="custom-control-input"
+                                        th:value="${infoAluno[iterStat.index].nota}"
                                         th:id="'inputNota' + ${iterStat.index}"
                                         th:name="notasList">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="custom-control">
+                                        <input
+                                                type="text"
+                                                class="custom-control-input"
+                                                th:value="${infoAluno[iterStat.index].frequencia}"
+                                                th:id="'inputFrequencia' + ${iterStat.index}"
+                                                th:name="frequenciasList">
                                     </div>
                                 </td>
                             </tr>

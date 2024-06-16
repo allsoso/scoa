@@ -1,33 +1,23 @@
-package com.scoa.web.models;
+package com.scoa.web.dto;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import com.scoa.web.models.Turma;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "sala")
-public class Sala {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SalaDto {
     private Long id;
     private String codigo;
     private String nome;
     private Float quantidade_cadeiras;
-    @OneToOne
-    @JoinColumn(name="codigo_turma",nullable = true)
     private Turma turma;
-    @CreationTimestamp
     private LocalDateTime criado_em;
-    @UpdateTimestamp
     private LocalDateTime atualizado_em;
 }

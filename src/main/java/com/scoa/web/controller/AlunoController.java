@@ -4,9 +4,12 @@ import com.scoa.web.dto.AlunoDto;
 import com.scoa.web.dto.DisciplinaDto;
 import com.scoa.web.dto.TurmaDto;
 import com.scoa.web.models.Aluno;
+import com.scoa.web.models.Disciplina;
+import com.scoa.web.models.InfoAluno;
 import com.scoa.web.models.Turma;
 import com.scoa.web.service.AlunoService;
 import com.scoa.web.service.DisciplinaService;
+import com.scoa.web.service.InfoAlunoService;
 import com.scoa.web.service.TurmaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +18,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
+import static com.scoa.web.mapper.AlunoMapper.mapToAluno;
+import static com.scoa.web.mapper.DisciplinaMapper.mapToDisciplina;
 import static com.scoa.web.mapper.TurmaMapper.mapToTurma;
 
 @Controller
@@ -24,14 +29,17 @@ public class AlunoController {
    private AlunoService alunoService;
    private TurmaService turmaService;
    private DisciplinaService disciplinaService;
+   private InfoAlunoService infoAlunoService;
 
    @Autowired
    private AlunoController(AlunoService alunoService,
                            TurmaService turmaService,
-                           DisciplinaService disciplinaService){
+                           DisciplinaService disciplinaService,
+                           InfoAlunoService infoAlunoService){
        this.alunoService = alunoService;
        this.turmaService = turmaService;
        this.disciplinaService = disciplinaService;
+       this.infoAlunoService = infoAlunoService;
    }
 
    @GetMapping("/alunos")
@@ -75,23 +83,65 @@ public class AlunoController {
    @GetMapping("/alunos/{alunoId}/edit")
    public String editAlunoForm(@PathVariable("alunoId") long alunoId, Model model){
        List<TurmaDto> turmas = turmaService.findAllTurmas();
-       AlunoDto aluno = alunoService.findAlunoById(alunoId);
-       System.out.println(aluno.getTurma());
-       List<DisciplinaDto> disciplinasSelecionadas = disciplinaService.findAllDisciplinasByTurma(aluno.getTurma().getId());
-       model.addAttribute("aluno",aluno);
+
+       AlunoDto alunoDto = alunoService.findAlunoById(alunoId);
+       Aluno aluno = mapToAluno(alunoDto);
+
+       Set<InfoAluno> infoAlunos = new HashSet<>();
+       List<DisciplinaDto> disciplinasSelecionadas;
+
+       if (aluno.getTurma() != null) {
+           disciplinasSelecionadas = disciplinaService.findAllDisciplinasByTurma(aluno.getTurma().getId());
+       } else {
+           disciplinasSelecionadas = Collections.emptyList();
+       }
+
+       for (DisciplinaDto disciplinaDto : disciplinasSelecionadas) {
+           Disciplina disciplina = mapToDisciplina(disciplinaDto);
+           Optional<InfoAluno> notaAlunoOpt = infoAlunoService.findByAlunoAndDisciplina(aluno, disciplina);
+           InfoAluno infoAluno = notaAlunoOpt.orElseGet(() -> {
+               InfoAluno defaultInfoAluno = new InfoAluno();
+               defaultInfoAluno.setAluno(aluno);
+               defaultInfoAluno.setDisciplina(disciplina);
+               defaultInfoAluno.setNota(0L);
+               defaultInfoAluno.setFrequencia(0L);
+               return defaultInfoAluno;
+           });
+
+           infoAlunos.add(infoAluno);
+       }
+       model.addAttribute("aluno",alunoDto);
        model.addAttribute("turmas",turmas);
        model.addAttribute("disciplinas",disciplinasSelecionadas);
+       model.addAttribute("infoAluno", infoAlunos);
        return "alunos-edit";
    }
 
    @PostMapping("/alunos/{alunoId}/edit")
    public String updateAluno(@PathVariable("alunoId") Long alunoId,
                              @RequestParam(value="turma", required = false) String turmaId,
+                             @RequestParam(value = "notasList", required = false) List<String> notasList,
+                             @RequestParam(value = "frequenciasList", required = false) List<String> frequenciasList,
+                             @RequestParam(value = "disciplinasList", required = false) List<String> disciplinasList,
                              @Valid @ModelAttribute("aluno") AlunoDto alunoDto,
                              BindingResult result, Model model){
        if(result.hasErrors()) {
            model.addAttribute("aluno", alunoDto);
            return "alunos-edit";
+       }
+       Aluno aluno = mapToAluno(alunoDto);
+       alunoService.deleteAllNotaByAlunoId(alunoId);
+       if(notasList != null){
+           for (int i = 0; i < notasList.size(); i++) {
+               DisciplinaDto disciplinaDto = disciplinaService.findDisciplinaById(Long.parseLong(disciplinasList.get(i)));
+               Disciplina disciplina = mapToDisciplina(disciplinaDto);
+               InfoAluno infoAluno = new InfoAluno();
+               infoAluno.setAluno(aluno);
+               infoAluno.setDisciplina(disciplina);
+               infoAluno.setNota(Long.valueOf(notasList.get(i)));
+               infoAluno.setFrequencia(Long.valueOf(frequenciasList.get(i)));
+               infoAlunoService.insertNotaForAluno(infoAluno);
+           }
        }
        TurmaDto turmaDto = turmaService.findTurmaById(Integer.parseInt(turmaId));
        Turma turma = mapToTurma(turmaDto);

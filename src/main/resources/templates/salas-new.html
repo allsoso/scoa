@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Inserir Sala</title>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <section layout:fragment="body" class="py-5">
+        <div class="container m-5 border">
+            <form class="row g-3 m-4" role="form" method="post"
+                  th:action="@{/salas/new}"
+                  th:object="${sala}">
+                <div class ="col-12 m-2 text-center">
+                    <h2>Insira as Informacoes da Sala</h2>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputNome" class="form-label">Nome</label>
+                    <input
+                            type="text"
+                            th:field="*{nome}"
+                            class="form-control"
+                            id="inputNome">
+                    <p th:if="${#fields.hasErrors('nome')}" class="text-danger" th:errors="*{nome}"></p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputCodigo" class="form-label">Código</label>
+                    <input
+                            type="text"
+                            th:field="*{codigo}"
+                            class="form-control"
+                            id="inputCodigo">
+                    <p th:if="${#fields.hasErrors('codigo')}" class="text-danger" th:errors="*{codigo}"></p>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputQuantidadeCadeiras" class="form-label">Qntd. de Cadeiras</label>
+                    <input
+                            type="text"
+                            th:field="*{quantidade_cadeiras}"
+                            class="form-control"
+                            id="inputQuantidadeCadeiras">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Inserir Sala</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>
