@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -33,4 +35,7 @@ public class Aluno {
     private LocalDateTime criado_em;
     @UpdateTimestamp
     private LocalDateTime atualizado_em;
+
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL)
+    private Set<InfoAluno> infoAlunos;
 }
