@@ -1,5 +1,6 @@
 package com.scoa.web.controller;
 
+import com.scoa.web.dto.AlunoDisciplinaInfoDto;
 import com.scoa.web.dto.AlunoDto;
 import com.scoa.web.dto.DisciplinaDto;
 import com.scoa.web.dto.TurmaDto;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 import static com.scoa.web.mapper.AlunoMapper.mapToAluno;
+import static com.scoa.web.mapper.AlunoMapper.mapToAlunoDto;
 import static com.scoa.web.mapper.DisciplinaMapper.mapToDisciplina;
 import static com.scoa.web.mapper.TurmaMapper.mapToTurma;
 
@@ -129,8 +131,13 @@ public class AlunoController {
            model.addAttribute("aluno", alunoDto);
            return "alunos-edit";
        }
+       TurmaDto turmaDto = turmaService.findTurmaById(Integer.parseInt(turmaId));
+       Turma turma = mapToTurma(turmaDto);
+       alunoDto.setTurma(turma);
+       alunoService.updateAluno(alunoDto);
        Aluno aluno = mapToAluno(alunoDto);
        alunoService.deleteAllNotaByAlunoId(alunoId);
+       System.out.println(aluno.getId());
        if(notasList != null){
            for (int i = 0; i < notasList.size(); i++) {
                DisciplinaDto disciplinaDto = disciplinaService.findDisciplinaById(Long.parseLong(disciplinasList.get(i)));
@@ -143,11 +150,6 @@ public class AlunoController {
                infoAlunoService.insertNotaForAluno(infoAluno);
            }
        }
-       TurmaDto turmaDto = turmaService.findTurmaById(Integer.parseInt(turmaId));
-       Turma turma = mapToTurma(turmaDto);
-       alunoDto.setId(alunoId);
-       alunoDto.setTurma(turma);
-       alunoService.updateAluno(alunoDto);
        return "redirect:/alunos";
    }
    @GetMapping("/alunos/{alunoId}/delete")
@@ -155,4 +157,22 @@ public class AlunoController {
        alunoService.delete(alunoId);
        return "redirect:/alunos";
    }
+
+
+    @GetMapping("/relatorio/turma")
+    public String listRelatorioTurma(Model model){
+        return "relatorios-list";
+    }
+    @PostMapping("/relatorio/turma")
+    public String filterRelatorioTurma(
+            @RequestParam(value = "filterTurma", required = false) String nome,
+            Model model){
+       TurmaDto turmaDto = turmaService.findTurmaByNome(nome);
+       if(turmaDto != null){
+           List<AlunoDisciplinaInfoDto> alunoDisciplinaInfo =  alunoService.findAllAlunosWithDisciplinasAndNotas(turmaDto.getId());
+           model.addAttribute("alunosWithDisciplinasAndNotas", alunoDisciplinaInfo);
+       }
+        return "relatorios-list";
+    }
+
 }

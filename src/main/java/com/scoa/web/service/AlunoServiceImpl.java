@@ -1,10 +1,13 @@
 package com.scoa.web.service;
 
+import com.scoa.web.dto.AlunoDisciplinaInfoDto;
 import com.scoa.web.dto.AlunoDto;
 import com.scoa.web.models.Aluno;
+import com.scoa.web.models.Turma;
 import com.scoa.web.repository.AlunoRepositorio;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +71,25 @@ public class AlunoServiceImpl implements AlunoService{
     @Override
     public void delete(Long alunoId) {
         alunoRepositorio.deleteById(alunoId);
+    }
+
+    @Override
+    public List<Aluno> findByTurma(Turma turma){
+       return alunoRepositorio.findByTurma(turma);
+    }
+
+    @Override
+    @Transactional
+    public List<AlunoDisciplinaInfoDto> findAllAlunosWithDisciplinasAndNotas(Long turmaId) {
+        String jpql = "SELECT new com.scoa.web.dto.AlunoDisciplinaInfoDto(a.nome, d.nome, i.nota, i.frequencia) " +
+                "FROM Turma t " +
+                "JOIN t.disciplinas d " +
+                "JOIN t.alunos a " +
+                "LEFT JOIN InfoAluno i ON i.aluno = a AND i.disciplina = d " +
+                "WHERE t.id = :turmaId";
+        TypedQuery<AlunoDisciplinaInfoDto> query = entityManager.createQuery(jpql, AlunoDisciplinaInfoDto.class)
+                .setParameter("turmaId", turmaId);
+        return query.getResultList();
     }
 
 }

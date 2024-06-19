@@ -6,6 +6,7 @@ import com.scoa.web.models.InfoAluno;
 import com.scoa.web.repository.InfoAlunoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ public class InfoAlunoServiceImpl implements InfoAlunoService {
     public InfoAlunoServiceImpl(InfoAlunoRepositorio infoAlunoRepositorio){this.infoAlunoRepositorio = infoAlunoRepositorio;}
     @Override
     public InfoAluno insertNotaForAluno(InfoAluno infoAluno){
-       return infoAlunoRepositorio.save(infoAluno);
+       return infoAlunoRepositorio.saveAndFlush(infoAluno);
     }
     @Override
     public List<InfoAluno> findAllNotaByDisciplina(Long disciplinaId){

@@ -36,6 +36,6 @@ public class Aluno {
     @UpdateTimestamp
     private LocalDateTime atualizado_em;
 
-    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "aluno")
     private Set<InfoAluno> infoAlunos;
 }

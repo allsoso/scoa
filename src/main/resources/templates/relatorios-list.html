@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Relatório</title>
+</head>
+
+<!-- Page Content-->
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <section layout:fragment="body" class="py-5">
+        <div class="container m-3 border">
+            <form class="row g-3 m-4" role="form" method="post"
+                  th:action="@{/relatorio/turma}">
+                <div class="form-group col-md-3">
+                    <label for="filterTurma" class="form-label">Nome</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="filterTurma"
+                            name="filterTurma">
+                </div>
+                <div class="form-group col-12">
+                    <button type="submit" class="form-control btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+        <div class="container m-5 border">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Aluno</th>
+                        <th scope="col">Disciplina</th>
+                        <th scope="col">Nota</th>
+                        <th scope="col">Frequencia</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="alunoDisciplinaInfo : ${alunosWithDisciplinasAndNotas}">
+                        <td th:text="${alunoDisciplinaInfo.nomeAluno}"></td>
+                        <td th:text="${alunoDisciplinaInfo.nomeDisciplina}"></td>
+                        <td th:text="${alunoDisciplinaInfo.nota}"></td>
+                        <td th:text="${alunoDisciplinaInfo.frequencia}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>
